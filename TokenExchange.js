@@ -64,9 +64,6 @@ function exchangeToken(){
             }
         });
     
-
-
-
     var exchangetoken = exchangetokenat.exchange({
                         from: web3.eth.account[0],
                         gas:300000
