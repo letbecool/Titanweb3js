@@ -73,7 +73,7 @@ function giveAccess(){
 }
 
 
-function giveAccess(){
+function deleteAccess(){
     //function deleteAccess(address _owner_address, address _secowner_address, bytes32 _assetkey)private {
 
         var deleteaccess = accesstoken.deleteAccess({
