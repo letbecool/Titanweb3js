@@ -1,53 +1,47 @@
+var Web3 = require('web3')
+var solc = require('solc')
+var fs = require('fs')
+ 
+var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+var code = fs.readFileSync('AccessToken.sol').toString()
+var compiledCode = solc.compile(code)
+ 
+var abiDefinition = JSON.parse(compiledCode.contracts[':AccessToken'].interface)
+var Contract = web3.eth.contract(abiDefinition)
+var byteCode = compiledCode.contracts[':AccessToken'].bytecode
+ 
+//console.log(byteCode)
+///* 
+//input var  _assetkey  from bdb
+//input var  account address <- web3.eth.accounts[0]
+var _assetkey = '0xfffff'; 
+var flag = false;
+//This address must be constant , It cannot be changed , This value is set after getting the address of the contract .
+const address = 'addressofcontract' ;
 
 
-    //require file system. 
-    //this enables us to read all file inside the folder where this current .js file belongs to
-    // that means all .sol file and .js file must be in the same folder 
-    const fs = require("fs");
-
-    //require solc includes  compiler 
-    const solc = require('solc');
-    let Web3 = require('web3');
-    let web3 = new Web3();
-    web3.setProvider(new web3.providers.HttpProvider('https://rinkeby.infura.io/V6nTctDt9v9YiCZDAH24'));
-
-    /**Reading AccessToken.sol from the file system
-    */
-    var input = fs.readFile('AccessToken.sol', 'utf8');
-
-    let compiledContract = solc.compile({sources: input}, 1);
-    let abi = compiledContract.contracts['AccessToken.sol:AccessToken'].interface;
-    let bytecode = '0x'+compiledContract.contracts['AccessToken.sol:AccessToken'].bytecode;
-    let gasEstimate = web3.eth.estimateGas({data: bytecode});
-    let AccessToken = web3.eth.contract(JSON.parse(abi));
-
-    var AssetKey = "0x1ff"; // this value come from bigchaindb
-    var flag;
-    var accesstoken;
-    //deploying the contract . empty @param
-
-    accesstoken = AccessToken.new({
-        from: web3.eth.account[0],
-                        gas:300000
-                        });
-
-    //function registerAsset(bytes32 _assetkey, bool _flag) public isAdmin(_assetkey)  returns (bool)
-function RegisteredAsset(){
-    var registerasset = accesstoken.registerAsset({
-                        from: web3.eth.account[0],
-                        gas:300000
-                        }, 
-                        AssetKey, 
-                        flag = false 
-                    );
-
-    //event RegisteredAsset(address, bytes32, bool);
-
-    registerasset.watch(function(error,result){
-        if(!error){
-            console.log(result);
-        }else{
-    console.log(error);
+function deploy(){
+    var deployedContract = Contract.new({ data: byteCode, from: web3.eth.accounts[0], gas: 4700000 }, (err, res) => {
+        if (err) {
+            console.log(err);
+            return;
         }
-    });
+        if (res.address) {
+            
+        console.log(res.address)
+            
+        }
+    })
+}
+
+
+function contractFrom(address) {
+      
+    const DeployedContractRef = Contract.at(address);
+    // function registerAsset(bytes32 _assetkey, bool _flag) public isAdmin(_assetkey) constant returns (bool){
+    var data = DeployedContractRef.registerAsset(web3.fromAscii(_assetkey),flag,{ from: web3.eth.accounts[0], gas: 400000 });
+    console.log(data);
+    DeployedContractRef.RegisteredAsset().watch(function(error, result) {
+    console.log(result.args.result);
+    })
 }
