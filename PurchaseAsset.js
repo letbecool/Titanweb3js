@@ -12,14 +12,14 @@ var byteCode = compiledCode.contracts[':TitanToken'].bytecode
  
 
 //Input variables
-//_to   this is address of merchant so we can buy asset 
-// _value  this is amount of token sent to  _to address
+var to = "0xff"; //  this is address of merchant so we can buy asset 
+var _value = 10; // this is amount of token sent to  _to address
 
 
 //This address must be constant , It cannot be changed , This value is set after getting the address of the contract .
 //const address = 'addressofcontract' ;
 
-
+deploy();
 function deploy(){
     var deployedContract = Contract.new({ data: byteCode, from: web3.eth.accounts[0], gas: 4700000 }, (err, res) => {
         if (err) {

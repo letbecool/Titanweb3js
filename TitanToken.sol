@@ -69,21 +69,7 @@ contract TitanToken{
         _transfer(msg.sender, _to, _value);
     }
 
-    /**
-     * Transfer tokens from other address
-     *
-     * Send `_value` tokens to `_to` on behalf of `_from`
-     *
-     * @param _from The address of the sender
-     * @param _to The address of the recipient
-     * @param _value the amount to send
-     */
-    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
-        require(_value <= allowance[_from][msg.sender]);     // Check allowance
-        allowance[_from][msg.sender] -= _value;
-        _transfer(_from, _to, _value);
-        return true;
-    }
+    
     function exchangeTo(uint256 _value )private {
         balanceOf[msg.sender] += _value;
         Eventexchangeto(name,symbol,_value);
@@ -92,6 +78,13 @@ contract TitanToken{
     function exchangeFrom(uint256 _value) private{
     balanceOf[msg.sender] -= _value;  
      Eventexchangefrom(name,symbol,_value);
+    }
+    // uint public constant factor = 10 ;
+    //assumed that both token exist for that wallet . To check, use web3js
+  
+    function exchange( uint256 _value, uint factor)public returns(uint256){
+       //passes the value of token from which we are exchanging to another token vaue . exchanged value is returned 
+    return _value *= factor;
     }
 }
 

@@ -1,51 +1,51 @@
- //require file system. 
-    //this enables us to read all file inside the folder where this current .js file belongs to
-    // that means all .sol file and .js file must be in the same folder 
-    const fs = require("fs");
+var Web3 = require('web3')
+var solc = require('solc')
+var fs = require('fs')
+ 
+var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+var code = fs.readFileSync('SuperTitan.sol').toString()
+var compiledCode = solc.compile(code)
+var abiDefinition = JSON.parse(compiledCode.contracts[':SuperTitan'].interface)
+var Contract = web3.eth.contract(abiDefinition)
+var byteCode = compiledCode.contracts[':SuperTitan'].bytecode
+//var _to = "0xff";
+//var _value = 10;
 
-    //require solc includes  compiler 
-    const solc = require('solc');
-    let Web3 = require('web3');
-    let web3 = new Web3();
-    web3.setProvider(new web3.providers.HttpProvider('https://rinkeby.infura.io/V6nTctDt9v9YiCZDAH24'));
+//Input variables
+var _initialSupply = 100;
+var _name = 'name';
+var symbol = 'N';
 
-    /**Reading SuperTitan.sol from the file system
-    */
-    var input = fs.readFile('SuperTitan.sol', 'utf8');
 
-    let compiledContract = solc.compile({sources: input}, 1);
-    let abi = compiledContract.contracts['SuperTitan.sol:SuperTitan'].interface;
-    let bytecode = '0x'+compiledContract.contracts['SuperTitan.sol:SuperTitan'].bytecode;
-    let gasEstimate = web3.eth.estimateGas({data: bytecode});
-    let SuperTitan = web3.eth.contract(JSON.parse(abi));
+//This address must be constant , It cannot be changed , This value is set after getting the address of the contract .
+//const address = 'addressofcontract' ;
+deploy();
 
-    var supertitanadd;
-    //deploying the contract . empty @param
 function deploy(){
-    supertitan = SuperTitan.new({
-        from: web3.eth.account[0],
-                        gas:300000
-                        });
- }
-    
- // function newToken(uint256 _initialSupply, bytes32 _name, bytes32 symbol)returns(address _contractaddress, bytes32 name_of_token)
-function newToken(){
-    var newtoken = supertitanadd.newToken({
-                        from: web3.eth.account[0],
-                        gas:300000
-                        }, 
-                        _initialsupply, 
-                        _name,
-                        symbol 
-                    );
 
-    //event RegisteredAsset(address, bytes32, bool);
-
-    supertitanadd.watch(function(error,result){
-        if(!error){
-            console.log(result);
-        }else{
-    console.log(error);
+    var deployedContract = Contract.new({ data: byteCode, from: web3.eth.accounts[0], gas: 4700000 }, (err, res) => {
+        if (err) {
+            console.log(err);
+            return;
         }
-    });
+        if (res.address) {
+            
+        console.log(res.address);
+        contractFrom(res.address); 
+        }
+    })
 }
+
+
+
+function contractFrom(address) {
+      //    function newToken(uint256 _initialSupply, bytes32 _name, bytes32 symbol) 
+    const DeployedContractRef = Contract.at(address);
+   
+    var data = DeployedContractRef.newToken(_initialSupply, _name, symbol, { from: web3.eth.accounts[0], gas: 40000000 });
+    console.log(data);
+    DeployedContractRef.TokenAddedToTitan().watch(function(error, result) {
+    console.log(result.args.result);
+    })
+}
+

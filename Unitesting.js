@@ -5,34 +5,45 @@ var fs = require('fs')
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 var code = fs.readFileSync('TitanToken.sol').toString()
 var compiledCode = solc.compile(code)
- 
+var data;
+var exchangevalue;
 var abiDefinition = JSON.parse(compiledCode.contracts[':TitanToken'].interface)
 var Contract = web3.eth.contract(abiDefinition)
 var byteCode = compiledCode.contracts[':TitanToken'].bytecode
- 
-
-//Input variables
-//_to   this is address of merchant so we can buy asset 
-// _value  this is amount of token sent to  _to address
-
-
-//This address must be constant , It cannot be changed , This value is set after getting the address of the contract .
-//const address = 'addressofcontract' ;
+var address;
+const factor = 10; //factor that token exchange
+//input _value
+//this function helps to switch between two tokens
+function switchContractForFrom(symbol){
 
 
-function deploy(){
-    var deployedContract = Contract.new({ data: byteCode, from: web3.eth.accounts[0], gas: 4700000 }, (err, res) => {
-        if (err) {
-            console.log(err);
-            return;
+    switch (symbol){
+        case 'R':
+         address = '0xff';
+       contractFrom(address);
+
+        case 'A':
+         address = '0xaf';
+        contractFrom(address);
+
         }
-        if (res.address) {
-            
-        console.log(res.address);
-        contractFrom(res.address); 
-        }
-    })
 }
+
+function switchContractForTo(symbol){
+
+
+    switch (symbol){
+        case 'R':
+         address = '0xff';
+       contractTo(address);
+
+        case 'A':
+         address = '0xaf';
+        contractTo(address);
+
+        }
+}
+
 
 
 
@@ -40,11 +51,25 @@ function contractFrom(address) {
       
     const DeployedContractRef = Contract.at(address);
     //  function transfer(address _to, uint256 _value)
-    var data = DeployedContractRef.transfer(_to,_value,{ from: web3.eth.accounts[0], gas: 400000 });
+     data = DeployedContractRef.exchangeFrom(_value,{ from: web3.eth.accounts[0], gas: 400000 });
     console.log(data);
-    DeployedContractRef.Transfer().watch(function(error, result) {
+    DeployedContractRef.Eventexchangefrom().watch(function(error, result) {
     console.log(result.args.result);
     })
+    exchangevalue = DeployedContractRef.exchange(data,factor, { from: web3.eth.accounts[0], gas: 400000 });
+    console.log(exchangevalue);
+    
 }
 
+function contractTo(address) {
+      
+    const DeployedContractRef = Contract.at(address);
+    //  function transfer(address _to, uint256 _value)
+     DeployedContractRef.exchangeTo(data,{ from: web3.eth.accounts[0], gas: 400000 });
+    console.log(data);
+    DeployedContractRef.Eventexchangeto().watch(function(error, result) {
+    console.log(result.args.result);
+    })
+       
+}
 
