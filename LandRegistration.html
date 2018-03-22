@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+
+<script src="web3.js"></script>
+<script>
+
+
+var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+
+var coursetroContract = web3.eth.contract([{"constant":true,"inputs":[],"name":"viewTokens","outputs":[{"name":"","type":"address[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"counter","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"tokendetails","outputs":[{"name":"initialSupply","type":"uint256"},{"name":"symbol","type":"bytes32"},{"name":"name","type":"bytes32"},{"name":"tokenaddress","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"addr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_initialSupply","type":"uint256"},{"name":"_name","type":"bytes32"},{"name":"_symbol","type":"bytes32"}],"name":"newToken","outputs":[{"name":"","type":"address"},{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"","type":"address"},{"indexed":false,"name":"","type":"bytes32"}],"name":"TokenAddedToTitan","type":"event"}]);
+addr= "0xc4e1d58f1a0a07cc4aa9927eb521d5885cd847c0";
+
+var myContractInstance = coursetroContract.at(addr);
+console.log(myContractInstance);
+var Govaddress = "0x29ab8cebc66dab188494d264348dc81977715ded";
+var AccountID = "0x6fff6f4557d95a6735ff179d5a4f98548944f402";
+var Ownername = "Gopal";
+var OwnerAddress = "ktm";
+var GovID = "a1";
+var PropertyID = "ak47";
+var Pow = "lisence";
+var PreviousOwnerID = "0x0";
+var transferto = "0xcbcb81a76ea49e8bd2c7f3dd3ca45a71d925277b";
+
+
+console.log(myContractInstance.propertyRegister(AccountID,Ownername,OwnerAddress,GovID,PropertyID,Pow,{from:AccountID,gas:2500000}));
+
+console.log(myContractInstance.Verify(PropertyID,AccountID,{from:Govaddress,gas:2500000}));
+
+//console.log(AccountID,transferto,PropertyID,Ownername,OwnerAddress,GovID,{from:AccountID,gas:2500000});
+
+/*
+var temp;
+
+temp = myContractInstance.getInstructor(fname,accounts);
+console.log(web3.toUtf8(temp[0]));
+console.log(temp[1]);
+/home/rosebay/Titan/build/bin/gethconsole.log(temp[2]);
+
+var dumpdata = myContractInstance.play.call('black','0x29ab8cebc66dab188494d264348dc81977715ded');
+console.log(dumpdata[0]+" another ");
+console.log(dumpdata[1]);
+*/
+</script>
+</head>
+<body>
+</body>
+/home/rosebay/Titan/build/bin/geth</html>
+

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+        <meta charset="utf-8"/>
+<head>
+<title>Page Title</title>
+
+<script src="web3.js"></script>
+<script>
+
+
+var web3 = new Web3(new Web3.providers.HttpProvider("http://18.188.87.71:8545"));
+var LoyaltyContract = web3.eth.contract([{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"bytes32"}],"name":"ontokenbucket","outputs":[{"name":"Address","type":"address"},{"name":"Name","type":"bytes32"},{"name":"Symbol","type":"bytes32"},{"name":"Currentholdings","type":"uint256"},{"name":"Userstatus","type":"bool"},{"name":"Merchantstatus","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"tradingfrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"},{"name":"_tokenName","type":"bytes32"}],"name":"transfer","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_tokenName","type":"bytes32"}],"name":"initialReg","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_tokenName","type":"bytes32"},{"name":"_tokenSymbol","type":"bytes32"}],"name":"registerUsers","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"tradingto","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_initialSupply","type":"uint256"},{"name":"_tokenName","type":"bytes32"},{"name":"_tokenSymbol","type":"bytes32"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"","type":"address"},{"indexed":false,"name":"","type":"bytes32"},{"indexed":false,"name":"","type":"bytes32"},{"indexed":false,"name":"","type":"uint256"}],"name":"UserRegisteredLog","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"from","type":"address"},{"indexed":false,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"TransferLog","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"","type":"address"},{"indexed":false,"name":"","type":"bytes32"},{"indexed":false,"name":"","type":"bytes32"},{"indexed":false,"name":"","type":"uint256"},{"indexed":false,"name":"","type":"bool"},{"indexed":false,"name":"","type":"bool"}],"name":"InitialRegLog","type":"event"}]);
+
+//address of titan token
+addr= "0xdb0d1d4948d71ee02e00f07ec0334fc3bc9538bb";
+var myContractInstance = LoyaltyContract.at(addr);
+console.log(myContractInstance);
+
+
+//valid address
+var account = "0xb7950e70f188b62a7cb17c9024d5bb9e1085f446";
+var account1 = "0x5e4736d5e52f6b6d33f21175b5715bf024d1c2a7";
+var _tokenName = "Titan";
+var _tokenSymbol = "T";
+var value = 100;
+
+
+console.log(myContractInstance.transfer(account, value,  _tokenName,{from: account, gas: 2000000}));
+
+
+</script>
+</head>
+<body>
+</body>
+/home/rosebay/Titan/build/bin/geth</html>
+

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+
+<script src="web3.js"></script>
+<script>
+
+
+var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+
+var coursetroContract = web3.eth.contract([
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_fName",
+				"type": "bytes32"
+			},
+			{
+				"name": "_age",
+				"type": "uint256"
+			},
+			{
+				"name": "_addr",
+				"type": "address"
+			}
+		],
+		"name": "setInstructor",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_fName",
+				"type": "bytes32"
+			},
+			{
+				"name": "_addr",
+				"type": "address"
+			}
+		],
+		"name": "getInstructor",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			},
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "play",
+		"outputs": [
+			{
+				"name": "name",
+				"type": "bytes32"
+			},
+			{
+				"name": "addresses",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]);
+addr= "0x50fd5b18b6de9325c5374bd5cd465f9014676a41";
+
+var myContractInstance = coursetroContract.at(addr);
+console.log(myContractInstance);
+/*
+var fname = "black";
+var age = 5;
+var accounts = "0x29ab8cebc66dab188494d264348dc81977715ded";
+console.log(myContractInstance.setInstructor(fname,age,accounts,{from:accounts,gas:2500000}));
+var temp;
+temp = myContractInstance.getInstructor(fname,accounts);
+console.log(web3.toUtf8(temp[0]));
+console.log(temp[1]);
+console.log(temp[2]);
+*/
+var dumpdata = myContractInstance.play.call('black','0x29ab8cebc66dab188494d264348dc81977715ded');
+console.log(dumpdata[0]+" another ");
+console.log(dumpdata[1]);
+</script>
+</head>
+<body>
+</body>
+</html>
+

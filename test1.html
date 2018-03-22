@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+
+<script src="web3.js"></script>
+<script>
+
+
+var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+
+var coursetroContract = web3.eth.contract([{"constant":false,"inputs":[{"name":"_fName","type":"string"},{"name":"_age","type":"uint256"}],"name":"setInstructor","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getInstructor","outputs":[{"name":"","type":"string"},{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]);
+
+
+var myContractInstance = coursetroContract.at('0x4398578e0d39a96909891123404ccc30a9a610d5');
+console.log(myContractInstance);
+
+
+
+
+//console.log(myContractInstance.setInstructor("red",14,{from: web3.eth.accounts[0],gas:2500000}));
+
+console.log(myContractInstance.getInstructor()[1].toString(10));
+</script>
+
+
+
+
+
+
+</head>
+<body>
+
+
+
+</body>
+</html>
+

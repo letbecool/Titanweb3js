@@ -1,20 +1,32 @@
 var Web3 = require('web3')
 var solc = require('solc')
+console.log(solc);
 var fs = require('fs')
- 
+console.log(fs);
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+console.log(" ................................this is for web3 provider");
+console.log(web3);
 var code = fs.readFileSync('AccessToken.sol').toString()
 var compiledCode = solc.compile(code)
  
 var abiDefinition = JSON.parse(compiledCode.contracts[':AccessToken'].interface);
-var AccessTokenContract = web3.eth.contract(abiDefinition)
+console.log("all done..................................... ");
+console.log(abiDefinition);
+
+
+
+var AccessTokenContract = web3.eth.contract(abiDefinition);
+console.log("...............................all done..................................... ");
+console.log(AccessTokenContract);
 var byteCode = compiledCode.contracts[':AccessToken'].bytecode
  
-//console.log(byteCode)
+console.log(byteCode)
 ///* 
-
+console.log(".........now further is to deploy the contract......................all done..................................... ");
 var _assetkey = '0xfffff'; 
 var flag = false;
+
+
 var deployedContract = AccessTokenContract.new({ data: byteCode, from: web3.eth.accounts[0], gas: 4700000 }, (err, res) => {
     if (err) {
       //  console.log(err);
